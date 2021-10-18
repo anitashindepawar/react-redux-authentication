@@ -1,25 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { Router, Route, Switch, Redirect } from 'react-router-dom';
+// import { connect } from 'react-redux';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+import { history } from './helpers';
+// import { alertActions } from '../_actions';
+ import { PrivateRoute } from './components/privateRoute';
+import { HomePage }  from './components/homePage';
+import { LoginPage } from './components/loginPage';
+import { RegistrationPage } from './components/registrationPage';
 
-export default App;
+export default function App(){
+
+    const redirectToLogin = () => {
+        history.push('/login')
+      }
+
+      const redirectToRegistration = ()=>{
+        history.push('/register')
+
+      }
+
+    return(<div>
+        <button onClick={redirectToLogin} >Login</button>
+        <button  onClick={redirectToRegistration}>Register</button>
+        <HomePage/>
+
+        <Router history={history}>
+                            <Switch>
+                                <PrivateRoute exact path="/" component={HomePage} />
+                                <Route path="/login" component={LoginPage} />
+                                <Route path="/register" component={RegistrationPage} />
+                                <Redirect from="*" to="/" />
+                            </Switch>
+                        </Router>
+    </div>);
+} 
